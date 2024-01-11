@@ -1,2 +1,6 @@
 *.xlsx
 *.json 
+keys.py
+keys2.py
+completed_ebay_api.py
+analsys.ipynb

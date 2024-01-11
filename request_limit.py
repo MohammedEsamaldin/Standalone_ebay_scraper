@@ -1,29 +1,35 @@
 import json
-from datetime import datetime, timedelta
-# /opt/airflow/dags/data/request_counter.json
+from datetime import datetime
 
-def counter_updater(counter= 0 , filename ='/home/qparts/ebay_scraper/request_counter.json'):
-      with open(filename, 'w') as file:
-        json.dump({
-            'date_of_counter': datetime.now().isoformat(),
-            'current_request_num': counter
-        }, file)
-      
+def load_counters(filename):
+    try:
+        with open(filename, 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return {}
 
+def save_counters(filename, data):
+    with open(filename, 'w') as file:
+        json.dump(data, file, indent=4)
 
+def update_counter(filename, user, max_count=5000):
+    counters = load_counters(filename)
+    today = datetime.now().strftime("%Y-%m-%d")
+    user_str = str(user)
+    
+    if user_str not in counters or counters[user_str]["date"] != today:
+        counters[user_str] = {"date": today, "count": 0}
 
-def limit_updater(filename ='/home/qparts/ebay_scraper/request_counter.json'):
-    now = datetime.now()
-    with open(filename, 'r') as file:
-            counter_data = json.load(file)
-            c_date_str = counter_data["date_of_counter"]
-            c_date = datetime.strptime(c_date_str,'%Y-%m-%dT%H:%M:%S.%f')
-            counter = counter_data["current_request_num"]
-    if (now.month == c_date.month) and (now.day == c_date.day):
-          print('this is yes')
-          return counter
+    if counters[user_str]["count"] < max_count:
+        counters[user_str]["count"] += 1
+        save_counters(filename, counters)
+        return counters[user_str]["count"]
     else:
-          print('this is error')
-          counter = 0
-          counter_updater()
-          return counter
+        return None  # Counter limit reached for the day
+
+def get_current_count(filename, user):
+    counters = load_counters(filename)
+    user_str = str(user)
+    if user_str in counters:
+        return counters[user_str]["count"]
+    return 0
