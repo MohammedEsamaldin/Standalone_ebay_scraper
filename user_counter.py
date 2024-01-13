@@ -40,11 +40,9 @@ def update_counter(user , filename ='/home/qparts/ebay_scraper/user_counter.json
         return None  # Counter limit reached for the day
 
 def get_current_count(user,  filename ='/home/qparts/ebay_scraper/user_counter.json'):
-    print('getting current count')
     counters = load_counters(filename)
     user_str = str(user)
     if user_str in counters:
-        print('user found ')
         return counters[user_str]["count"]
     return 0
 # current = update_counter(filename=filename,user= 4)

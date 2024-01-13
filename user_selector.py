@@ -8,19 +8,17 @@ def user_credentials_selector(user=1):
     number_of_users = 4  # Total number of users
 
     for i in range(user, number_of_users + 1):
-        print(f'user number {i}')
         current_count = user_counter.get_current_count( i,filename)
-        print(current_count,'///')
         if current_count < max_count:
             app_id = getattr(keys2, f'app_id_{i}', None)
             client_secre = getattr(keys2, f'client_secre_{i}', None)
-            return app_id, client_secre, i
+            return app_id, client_secre, i, current_count
         # elif current_count == max_count:
 
     
     # If all users have exceeded the limit
     print("All users have exceeded the limit for today.")
-    return None, None, None
+    return None, None, None, None
 
 # Example usage
 # app_id, client_secre, user = user_credentials_selector()

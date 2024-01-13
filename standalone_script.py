@@ -14,19 +14,19 @@ from xlrd import open_workbook
 import xlwt
 
 def main():
-    # /home/qparts/Desktop/QVM_projects/dags/data/ford_parts_data_07-01-2024.xlsx
-
+    global token
+    client_id, client_secret,c_user, current_count= user_credentials_selector()
+    if c_user is None:
+        return
+    token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
     script_path  = Path(__file__).parent
-    
-    # last_scraped_file.to_csv("./data/ebay_api_data2.csv",index= False)
     timeout_duration = 10
     max_retries = 3
     retry_delay = 5 
     max_request = 5000
-    current_count = update_counter(user=1)
-    print(f'current count for user {current_count}')
-    countig_range = max_request - current_count
-    print('counting range is ',countig_range)
+    # print(f'current count for user {current_count}')
+    # countig_range = max_request - current_count
+    # print('counting range is ',countig_range)
     # Example timeout duration in seconds
     timeout_duration = 10
 
@@ -42,7 +42,7 @@ def main():
     data_of_scraping = time.strftime("%d-%m-%Y")
 
     full_scraped_data_filename = file_name+'_'+data_of_scraping
-    token = get_valid_application_token(app_id, client_secret)
+    # token = get_valid_application_token(app_id, client_secret)
     try:
         # /home/qparts/ebay_scraper/output
         excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
@@ -83,7 +83,6 @@ def main():
     def make_api_request(url, headers, data, part_number,first_item_id,timeout_duration, retry_delay, max_retries=3):
             excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
             scraped_data = pd.read_excel(excel_file_path)
-# /home/qparts/Desktop/QVM_projects/data/ebay_api_data2.xlsx
 
             for attempt in range(max_retries):
                 if attempt >= 2:
@@ -94,7 +93,7 @@ def main():
                     # print(response.content)
                     if response.status_code == 200:
                         print('second request successded')
-                        print(response.content) 
+                        # print(response.content) 
                     
                         root = ET.fromstring(response.content)
                         # XML data
@@ -112,7 +111,6 @@ def main():
                             'Manufacturer Part Number', 'Model', 'Other Part Number','Replaces Part Number', 'Part Brand','Brand','FOR','Fit',
                             'Placement on Vehicle', 'Type', 'Year'
                         ]
-                        # print(root)
                         # Parse the XML data
                         root = ET.fromstring(xml_data)
 
@@ -155,7 +153,8 @@ def main():
                         dn = pd.DataFrame([{'Part Number':part_number, 'Item ID':first_item_id}])
                         dr = pd.concat([dn, df],axis=1, join='outer', ignore_index=False)
                         scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
-                        # /home/qparts/Desktop/QVM_projects/dags/data/ebay_api_data.xlsx
+
+
                         # Display the dataframe
                         
                         excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
@@ -167,7 +166,7 @@ def main():
                         global app_id
                         # Authentication error, token might have expired
                         print("Authentication failed, fetching a new token...")
-                        global token  # Ensure we are updating the global token variable
+                          # Ensure we are updating the global token variable
                         token = get_valid_application_token(app_id, client_secret)
                         headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"  # Update the header with the new token
                         continue  # Retry with the new token
@@ -181,12 +180,13 @@ def main():
 
     # print(start_index)
     for _, row in part_numbers.iloc[start_index:].iterrows():
+        client_id, client_secret,c_user, current_count= user_credentials_selector()
+        if c_user is None:
+            break
+        token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
         
         if current_count < max_request:
-            current_count = current_count +1
-            counter_updater(counter=current_count)
-        # for part_number in part_numbers['Part Number']:
-            # Assuming 'part_number' is the column you're interested in
+            current_count = update_counter(user = c_user)
             part_number = row['Part Number'] 
             product_name  = part_number
             print('loop started at ',part_number)
@@ -241,9 +241,7 @@ def main():
                 continue
         
         else:
-            print('reach the limit of 5000 request/day')
-            
-            counter_updater(counter=current_count)
+            print('reach the limit of 5000 request/day for all the users')
             break
         
 
