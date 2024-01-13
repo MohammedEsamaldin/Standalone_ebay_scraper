@@ -23,7 +23,8 @@ def main():
     max_retries = 3
     retry_delay = 5 
     max_request = 5000
-    current_count = limit_updater()
+    current_count = update_counter(user=1)
+    print(f'current count for user {current_count}')
     countig_range = max_request - current_count
     print('counting range is ',countig_range)
     # Example timeout duration in seconds

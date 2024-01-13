@@ -1,8 +1,8 @@
 import json
 from datetime import datetime
-# global filename
+
 filename = '/home/qparts/ebay_scraper/user_counter.json'
-def load_counters(filename):
+def load_counters(filename= '/home/qparts/ebay_scraper/user_counter.json'):
     try:
         with open(filename, 'r') as file:
             return json.load(file)
@@ -19,12 +19,12 @@ def load_counters(filename):
         print(f"An unexpected error occurred: {e}")
         return {}
 
-def save_counters(filename, data):
+def save_counters(data , filename ='/home/qparts/ebay_scraper/user_counter.json' ):
     print('saving')
     with open(filename, 'w') as file:
         json.dump(data, file, indent=4)
 
-def update_counter(filename, user, max_count=5000):
+def update_counter(user , filename ='/home/qparts/ebay_scraper/user_counter.json' , max_count=5000):
     counters = load_counters(filename)
     today = datetime.now().strftime("%Y-%m-%d")
     user_str = str(user)
@@ -34,12 +34,12 @@ def update_counter(filename, user, max_count=5000):
 
     if counters[user_str]["count"] < max_count:
         counters[user_str]["count"] += 1
-        save_counters(filename, counters)
+        save_counters(counters, filename)
         return counters[user_str]["count"]
     else:
         return None  # Counter limit reached for the day
 
-def get_current_count(user, filename):
+def get_current_count(user,  filename ='/home/qparts/ebay_scraper/user_counter.json'):
     print('getting current count')
     counters = load_counters(filename)
     user_str = str(user)
