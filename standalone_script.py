@@ -8,10 +8,7 @@ from pathlib import Path
 from token_manager import get_valid_application_token
 from user_counter import *
 from user_selector import *
-import os 
-import xlsxwriter
-from xlrd import open_workbook
-import xlwt
+from datetime import datetime,timedelta
 
 def main():
     global token
@@ -36,21 +33,29 @@ def main():
     # /home/qparts/ebay_scraper/input_data/chunk_1.xlsx
     app_id = keys.app_id
     client_secret = keys.client_secret
-    partnumber_file_path = f"{script_path}/input_data/ford_chunk_2.xlsx"
+    partnumber_file_path = f"{script_path}/input_data/chunk_3.xlsx"
     part_numbers  = pd.read_excel(partnumber_file_path)
     file_name  = Path(partnumber_file_path).stem
+    # Dates
+    current_date = datetime.now()
     data_of_scraping = time.strftime("%d-%m-%Y")
+    yesterday_date = current_date - timedelta(days=1)
+    data_of_yesterday_scraped_file = yesterday_date.strftime("%d-%m-%Y")
 
     full_scraped_data_filename = file_name+'_'+data_of_scraping
+    yesterday_scraped_file = file_name+'_'+data_of_yesterday_scraped_file
     # token = get_valid_application_token(app_id, client_secret)
     try:
         # /home/qparts/ebay_scraper/output
         excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
         last_scraped_file = pd.read_excel(excel_file_path)
+        print(f'Last scraped file is \t : {excel_file_path}')
         last_processed_value = last_scraped_file['Part Number'].iloc[-1]
         start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
     except:
-        print('exception')
+        print('It is a new scarping cycle for today')
+        excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
+        print(f'Last scraped file is \t : {excel_file_path}')
         n_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
         new_file = pd.DataFrame(columns = ['Part Number'])
         new_file.to_excel(n_path)
@@ -179,7 +184,12 @@ def main():
 
 
     # print(start_index)
-    for _, row in part_numbers.iloc[start_index:].iterrows():
+    for current_index, row in part_numbers.iloc[start_index:].iterrows():
+        
+        if current_index == 2661:
+            print(f'{current_index}it is now time to change the last scraped P N to not duplicate the numbers !!')
+
+            
         client_id, client_secret,c_user, current_count= user_credentials_selector()
         if c_user is None:
             break
@@ -196,6 +206,7 @@ def main():
             for attempt in range(max_retries):
                 try:
                     search_response = requests.get(url, timeout=timeout_duration)
+                    # print(search_response.content)
                     # Process the response...
                     if search_response.status_code==200:
                         print('first request success')

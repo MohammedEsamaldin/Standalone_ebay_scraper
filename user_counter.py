@@ -20,7 +20,7 @@ def load_counters(filename= '/home/qparts/ebay_scraper/user_counter.json'):
         return {}
 
 def save_counters(data , filename ='/home/qparts/ebay_scraper/user_counter.json' ):
-    print('saving')
+
     with open(filename, 'w') as file:
         json.dump(data, file, indent=4)
 

@@ -1,5 +1,6 @@
 *.xlsx
 *.json 
+*.csv
 keys.py
 keys2.py
 completed_ebay_api.py
