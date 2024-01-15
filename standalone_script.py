@@ -186,7 +186,10 @@ def main():
     # print(start_index)
     for current_index, row in part_numbers.iloc[start_index:].iterrows():
         
-          
+        if current_index == 2661:
+            print(f'{current_index}it is now time to change the last scraped P N to not duplicate the numbers !!')
+
+            
         client_id, client_secret,c_user, current_count= user_credentials_selector()
         if c_user is None:
             break
