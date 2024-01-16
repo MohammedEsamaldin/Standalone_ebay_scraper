@@ -64,8 +64,7 @@ def main():
         new_file = pd.DataFrame(columns = ['Part Number'])
         new_file.to_excel(n_path)
         last_scraped_file = pd.read_excel(excel_file_path)
-        last_processed_value = last_scraped_file['Part Number'].iloc[-1]
-        start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
+        
     
 
 
@@ -211,7 +210,7 @@ def main():
             url = f"https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME={app_id}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords={product_name}"
             for attempt in range(max_retries):
                 try:
-                    search_response = requests.get(url, proxies={"http": proxy, "https": proxy},timeout=timeout_duration)
+                    search_response = requests.get(url,timeout=timeout_duration)
                     # , proxies={"http": proxy, "https": proxy} 
                     # print(search_response.content)
                     # Process the response...
