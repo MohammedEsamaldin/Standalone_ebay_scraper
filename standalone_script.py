@@ -13,7 +13,8 @@ from itertools import cycle
 
 
 def main():
-    proxies = ["http://54.36.175.129:8000 ", "http://54.36.122.54:8000", "http://135.148.90.31:8000"]
+    proxies = ["http://202.62.10.210:8080"]
+            #    , "http://54.36.122.54:8000", "http://135.148.90.31:8000"]
     proxy_pool = cycle(proxies)
     global token
     client_id, client_secret,c_user, current_count= user_credentials_selector()
@@ -29,7 +30,7 @@ def main():
     # countig_range = max_request - current_count
     # print('counting range is ',countig_range)
     # Example timeout duration in seconds
-    timeout_duration = 10
+    timeout_duration = 60
 
     print('function started')
     # Your eBay app ID
@@ -103,7 +104,7 @@ def main():
                     # print(response.content)
                     if response.status_code == 200:
                         print('second request successded')
-                        # print(response.content) 
+                        print(response.content) 
                     
                         root = ET.fromstring(response.content)
                         # XML data
@@ -128,50 +129,54 @@ def main():
                         data_dict = {
                             category: [] if category in ['PictureURL', 'Placement on Vehicle'] else None for category in categories
                         }
-                        
-                        # Extract basic information
-                        title = root.find('.//ns0:Title', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
-                        price = root.find('.//ns0:ConvertedCurrentPrice', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
-                        data_dict.update({'Title': title, 'Price': price})
-                        # Extract information from ItemSpecifics
-                        for name_value_list in root.findall('.//ns0:NameValueList', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}):
-                            name = name_value_list.find('.//ns0:Name', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
-                            value = name_value_list.find('.//ns0:Value', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
-                            if name in categories:
-                                if name in ['PictureURL', 'Placement on Vehicle']:
-                                    # Append existing value or create a new list
-                                    if data_dict[name]:
-                                        data_dict[name].append(value)
+                        try:
+                            # Extract basic information
+                            title = root.find('.//ns0:Title', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
+                            price = root.find('.//ns0:ConvertedCurrentPrice', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
+                            data_dict.update({'Title': title, 'Price': price})
+                            # Extract information from ItemSpecifics
+                            for name_value_list in root.findall('.//ns0:NameValueList', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}):
+                                name = name_value_list.find('.//ns0:Name', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
+                                value = name_value_list.find('.//ns0:Value', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
+                                if name in categories:
+                                    if name in ['PictureURL', 'Placement on Vehicle']:
+                                        # Append existing value or create a new list
+                                        if data_dict[name]:
+                                            data_dict[name].append(value)
+                                        else:
+                                            data_dict[name] = [value]
                                     else:
-                                        data_dict[name] = [value]
-                                else:
-                                    # Update dictionary with extracted value
-                                    data_dict[name] = value
-                        # Extract information from other elements
-                        for category in categories:
-                            try:
-                                element = root.find(f'.//ns0:{category}', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'})
-                                if element is not None:
-                                    # Handle single values or lists depending on category
-                                    if category in ['PictureURL', 'Placement on Vehicle']:
-                                        data_dict[category].append(element.text)
-                                    else:
-                                        data_dict[category] = element.text
-                            except AttributeError:
-                                pass  # Ignore missing elements instead of throwing an error
-                        df = pd.DataFrame([data_dict])
-                        dn = pd.DataFrame([{'Part Number':part_number, 'Item ID':first_item_id}])
-                        dr = pd.concat([dn, df],axis=1, join='outer', ignore_index=False)
-                        scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+                                        # Update dictionary with extracted value
+                                        data_dict[name] = value
+                            # Extract information from other elements
+                            for category in categories:
+                                try:
+                                    element = root.find(f'.//ns0:{category}', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'})
+                                    if element is not None:
+                                        # Handle single values or lists depending on category
+                                        if category in ['PictureURL', 'Placement on Vehicle']:
+                                            data_dict[category].append(element.text)
+                                        else:
+                                            data_dict[category] = element.text
+                                except AttributeError:
+                                    pass  # Ignore missing elements instead of throwing an error
+                            df = pd.DataFrame([data_dict])
+                            dn = pd.DataFrame([{'Part Number':part_number, 'Item ID':first_item_id}])
+                            dr = pd.concat([dn, df],axis=1, join='outer', ignore_index=False)
+                            scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
 
 
-                        # Display the dataframe
-                        
-                        excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
-                        scraped_data.to_excel(f"./output/{full_scraped_data_filename}.xlsx",index= False)
-                        scraped_data.to_csv(f"./output/{full_scraped_data_filename}.csv",index= False)
-                        print('data saved')
-                        break  # If successful, break out of the retry loop
+                            # Display the dataframe
+                            
+                            excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
+                            scraped_data.to_excel(f"./output/{full_scraped_data_filename}.xlsx",index= False)
+                            scraped_data.to_csv(f"./output/{full_scraped_data_filename}.csv",index= False)
+                            print('data saved')
+                            break  # If successful, break out of the retry loop
+                        except:
+                            print('this is an error')
+                            continue
+
                     else:
                         global app_id
                         # Authentication error, token might have expired
@@ -211,8 +216,9 @@ def main():
             url = f"https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME={app_id}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords={product_name}"
             for attempt in range(max_retries):
                 try:
+                    
                     search_response = requests.get(url,timeout=timeout_duration)
-                    # , proxies={"http": proxy, "https": proxy} 
+                     # , proxies={"http": proxy, "https": proxy} 
                     # print(search_response.content)
                     # Process the response...
                     if search_response.status_code==200:
@@ -226,9 +232,6 @@ def main():
                 except requests.exceptions.RequestException as e:
                     print(f"An error occurred: {e}")
                     break  # Break if other request-related exceptions occur
-                except requests.exceptions.ProxyError:
-                    # Handle the proxy error by continuing with the next proxy
-                    continue
             else:
                 print(search_response.content)
                 print("Maximum retries reached for this part number, moving to next.")
