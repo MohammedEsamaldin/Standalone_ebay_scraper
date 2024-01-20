@@ -92,6 +92,7 @@ def main():
     
 
     def make_api_request(url, headers, data, part_number,first_item_id,timeout_duration, retry_delay, max_retries=3):
+            global client_id, client_secret,c_user, current_count, token
             excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
             scraped_data = pd.read_excel(excel_file_path)
 
@@ -181,21 +182,26 @@ def main():
                             for error in root.findall(".//ns0:Errors", namespaces):
                                 short_message = error.find('ns0:ShortMessage', namespaces).text
                                 if short_message == "IP limit exceeded.":
-                                    global client_id, client_secret,c_user, current_count, token
-                                    print(f'limit is exceeded for the current user  {c_user}' )
+                                    print(f'limit is exceeded for the current user' )
+                                    
+                                    
                                     
                                     # Making the current user count = 5000 to move to next item
-                                    print(f'user = {c_user}')
-                                    change_user_count(c_user)
+                                    
                                     client_id, client_secret,c_user, current_count= user_credentials_selector()
+                                    print(f'user number {c_user}')
+                                    change_user_count(c_user)
+                                    
+                                    client_id, client_secret,c_user, current_count= user_credentials_selector()
+                                    print(f'user number {c_user}')
                                     #  # Ensure we are updating the global token variable
                                     token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
                                
                                     # token = get_valid_application_token(app_id, client_secret)
                                     headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
-                                    continue
-                                else:
-                                    return None
+                                    break
+                                    
+                            
                             
 
                     else:
@@ -268,7 +274,7 @@ def main():
                 response = make_api_request(url_shopping, headers=shoppin_headers, data=body, part_number= part_number,first_item_id=first_item_id,timeout_duration = timeout_duration, retry_delay= retry_delay)
                 # print(response.content)
                 if response is None:
-                    break
+                    continue
                       # Skip to the next part number if the request failed
 
 

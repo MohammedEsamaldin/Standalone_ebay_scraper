@@ -50,7 +50,7 @@ def change_user_count(user, filename = '/home/qparts/ebay_scraper/user_counter.j
     counters = load_counters(filename)
     user_str = str(user)
     if counters[user_str]["count"] < 5000:
-        counters[user_str]["count"] == 5000
+        counters[user_str]["count"] = 5000
         save_counters(counters, filename)
         
 
