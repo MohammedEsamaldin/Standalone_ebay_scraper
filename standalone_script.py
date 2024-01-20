@@ -44,7 +44,7 @@ def main():
     # Dates
     current_date = datetime.now()
     data_of_scraping = time.strftime("%d-%m-%Y")
-    yesterday_date = current_date - timedelta(days=1)
+    yesterday_date = current_date - timedelta(days=2)
     data_of_yesterday_scraped_file = yesterday_date.strftime("%d-%m-%Y")
 
     full_scraped_data_filename = file_name+'_'+data_of_scraping
@@ -99,12 +99,13 @@ def main():
                 if attempt >= 2:
                     print('secod retry with new token')
                 try:
+                    namespaces = {'ns0': 'urn:ebay:apis:eBLBaseComponents'}
                     response = requests.post(url, headers=headers, data=data, timeout=timeout_duration)
                     # Check the response status code
                     # print(response.content)
                     if response.status_code == 200:
                         print('second request successded')
-                        print(response.content) 
+                        # print(response.content) 
                     
                         root = ET.fromstring(response.content)
                         # XML data
@@ -131,13 +132,13 @@ def main():
                         }
                         try:
                             # Extract basic information
-                            title = root.find('.//ns0:Title', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
-                            price = root.find('.//ns0:ConvertedCurrentPrice', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
+                            title = root.find('.//ns0:Title', namespaces).text
+                            price = root.find('.//ns0:ConvertedCurrentPrice', namespaces).text
                             data_dict.update({'Title': title, 'Price': price})
                             # Extract information from ItemSpecifics
-                            for name_value_list in root.findall('.//ns0:NameValueList', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}):
-                                name = name_value_list.find('.//ns0:Name', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
-                                value = name_value_list.find('.//ns0:Value', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'}).text
+                            for name_value_list in root.findall('.//ns0:NameValueList', namespaces):
+                                name = name_value_list.find('.//ns0:Name', namespaces).text
+                                value = name_value_list.find('.//ns0:Value', namespaces).text
                                 if name in categories:
                                     if name in ['PictureURL', 'Placement on Vehicle']:
                                         # Append existing value or create a new list
@@ -151,7 +152,7 @@ def main():
                             # Extract information from other elements
                             for category in categories:
                                 try:
-                                    element = root.find(f'.//ns0:{category}', namespaces={'ns0': 'urn:ebay:apis:eBLBaseComponents'})
+                                    element = root.find(f'.//ns0:{category}', namespaces)
                                     if element is not None:
                                         # Handle single values or lists depending on category
                                         if category in ['PictureURL', 'Placement on Vehicle']:
@@ -173,7 +174,31 @@ def main():
                             scraped_data.to_csv(f"./output/{full_scraped_data_filename}.csv",index= False)
                             print('data saved')
                             break  # If successful, break out of the retry loop
+
+
+
                         except:
+                            for error in root.findall(".//ns0:Errors", namespaces):
+                                short_message = error.find('ns0:ShortMessage', namespaces).text
+                                if short_message == "IP limit exceeded.":
+                                    
+                                    global app_id ,client_secret,user,current_count , token
+                                    
+                                    print(f'limit is exceeded and old user' )
+                                    
+                                    # current_count = limit_updater(filename ='/home/qparts/Desktop/QVM_projects/dags/data/request_counter.json')
+
+                                    
+                                    # app_id ,client_secret,user  = user_credintials_selector(response_massage=True , counter = current_count ,user=user)
+                                    #  # Ensure we are updating the global token variable
+                               
+                                    # token = get_valid_application_token(app_id, client_secret)
+                                    # headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
+                                    # continuation = True
+                                    # print(f'New User = {user}\n',
+                                    #         f'New counter = {current_count}\n'
+                                    #         )
+                                    break
                             print('this is an error')
                             continue
 
@@ -197,8 +222,7 @@ def main():
     for current_index, row in part_numbers.iloc[start_index:].iterrows():
         proxy = next(proxy_pool)
         
-        if current_index == 2661:
-            print(f'{current_index}it is now time to change the last scraped P N to not duplicate the numbers !!')
+        
 
             
         client_id, client_secret,c_user, current_count= user_credentials_selector()
