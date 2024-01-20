@@ -181,26 +181,22 @@ def main():
                             for error in root.findall(".//ns0:Errors", namespaces):
                                 short_message = error.find('ns0:ShortMessage', namespaces).text
                                 if short_message == "IP limit exceeded.":
+                                    global client_id, client_secret,c_user, current_count, token
+                                    print(f'limit is exceeded for the current user  {c_user}' )
                                     
-                                    global app_id ,client_secret,user,current_count , token
-                                    
-                                    print(f'limit is exceeded and old user' )
-                                    
-                                    # current_count = limit_updater(filename ='/home/qparts/Desktop/QVM_projects/dags/data/request_counter.json')
-
-                                    
-                                    # app_id ,client_secret,user  = user_credintials_selector(response_massage=True , counter = current_count ,user=user)
+                                    # Making the current user count = 5000 to move to next item
+                                    print(f'user = {c_user}')
+                                    change_user_count(c_user)
+                                    client_id, client_secret,c_user, current_count= user_credentials_selector()
                                     #  # Ensure we are updating the global token variable
+                                    token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
                                
                                     # token = get_valid_application_token(app_id, client_secret)
-                                    # headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
-                                    # continuation = True
-                                    # print(f'New User = {user}\n',
-                                    #         f'New counter = {current_count}\n'
-                                    #         )
-                                    break
-                            print('this is an error')
-                            continue
+                                    headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
+                                    continue
+                                else:
+                                    return None
+                            
 
                     else:
                         global app_id
@@ -219,12 +215,9 @@ def main():
 
 
     # print(start_index)
-    for current_index, row in part_numbers.iloc[start_index:].iterrows():
+    for _, row in part_numbers.iloc[start_index:].iterrows():
         proxy = next(proxy_pool)
-        
-        
-
-            
+                
         client_id, client_secret,c_user, current_count= user_credentials_selector()
         if c_user is None:
             break
@@ -275,7 +268,8 @@ def main():
                 response = make_api_request(url_shopping, headers=shoppin_headers, data=body, part_number= part_number,first_item_id=first_item_id,timeout_duration = timeout_duration, retry_delay= retry_delay)
                 # print(response.content)
                 if response is None:
-                    continue  # Skip to the next part number if the request failed
+                    break
+                      # Skip to the next part number if the request failed
 
 
                 else:
