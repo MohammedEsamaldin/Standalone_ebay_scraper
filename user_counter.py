@@ -45,5 +45,14 @@ def get_current_count(user,  filename ='/home/qparts/ebay_scraper/user_counter.j
     if user_str in counters:
         return counters[user_str]["count"]
     return 0
+
+def change_user_count(user, filename = '/home/qparts/ebay_scraper/user_counter.json' ):
+    counters = load_counters(filename)
+    user_str = str(user)
+    if counters[user_str]["count"] < 5000:
+        counters[user_str]["count"] == 5000
+        save_counters(counters, filename)
+        return
+
 # current = update_counter(filename=filename,user= 4)
 # print(current)
