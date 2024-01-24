@@ -113,11 +113,6 @@ def main():
                         # XML data
                         xml_data = ET.tostring(root, encoding='utf8').decode('utf8')
 
-                        # converting to json format 
-        
-                        d = xml_to_dict(root)
-                        # json_data = json.dumps(d, indent=4)
-                        # print(json_data)
                         
 
                         # Define categories to extract
