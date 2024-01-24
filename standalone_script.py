@@ -9,6 +9,7 @@ from token_manager import get_valid_application_token
 from user_counter import *
 from user_selector import *
 from datetime import datetime,timedelta
+import xmltodict
 from itertools import cycle
 
 
@@ -44,7 +45,7 @@ def main():
     # Dates
     current_date = datetime.now()
     data_of_scraping = time.strftime("%d-%m-%Y")
-    yesterday_date = current_date - timedelta(days=2)
+    yesterday_date = current_date - timedelta(days=1)
     data_of_yesterday_scraped_file = yesterday_date.strftime("%d-%m-%Y")
 
     full_scraped_data_filename = file_name+'_'+data_of_scraping
@@ -115,7 +116,8 @@ def main():
                         # converting to json format 
         
                         d = xml_to_dict(root)
-                        json_data = json.dumps(d, indent=4)
+                        # json_data = json.dumps(d, indent=4)
+                        # print(json_data)
                         
 
                         # Define categories to extract
@@ -162,6 +164,37 @@ def main():
                                             data_dict[category] = element.text
                                 except AttributeError:
                                     pass  # Ignore missing elements instead of throwing an error
+                            
+                            # Compatibilit Table
+                                
+                            doc = xmltodict.parse(xml_data)
+                            # Navigate to the Compatibility elements
+                            item_compatibility_list = doc['GetSingleItemResponse']['Item']['ItemCompatibilityList']
+                            compatibilities = item_compatibility_list.get('Compatibility', [])
+
+                            compatibility_list = []
+
+                            for comp in compatibilities:
+                                # Process each Compatibility element
+                                comp_data = {}
+                                name_value_lists = comp.get('NameValueList', [])
+
+                                # Make sure it's a list
+                                if isinstance(name_value_lists, dict):
+                                    name_value_lists = [name_value_lists]
+
+                                for nvl in name_value_lists:
+                                    if nvl:  # Skip None values
+                                        name = nvl.get('Name')
+                                        value = nvl.get('Value')
+                                        if name and value:
+                                            comp_data[name] = value
+
+                                if comp_data:
+                                    compatibility_list.append(comp_data)
+
+
+
                             df = pd.DataFrame([data_dict])
                             dn = pd.DataFrame([{'Part Number':part_number, 'Item ID':first_item_id}])
                             dr = pd.concat([dn, df],axis=1, join='outer', ignore_index=False)
@@ -271,6 +304,8 @@ def main():
                 <IncludeSelector>Details,ItemSpecifics,Variations,ShippingCosts</IncludeSelector>
                 </GetSingleItemRequest>
                 '''
+
+                # ,Compatibility
                 response = make_api_request(url_shopping, headers=shoppin_headers, data=body, part_number= part_number,first_item_id=first_item_id,timeout_duration = timeout_duration, retry_delay= retry_delay)
                 # print(response.content)
                 if response is None:
