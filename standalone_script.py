@@ -128,6 +128,7 @@ def main():
                         data_dict = {
                             category: [] if category in ['PictureURL', 'Placement on Vehicle'] else None for category in categories
                         }
+                        data_dict['Compatibility']= []
                         try:
                             # Extract basic information
                             title = root.find('.//ns0:Title', namespaces).text
@@ -160,7 +161,7 @@ def main():
                                 except AttributeError:
                                     pass  # Ignore missing elements instead of throwing an error
                             
-                            # Compatibilit Table
+                            ########## Compatibility Table ###########
                                 
                             doc = xmltodict.parse(xml_data)
                             # Navigate to the Compatibility elements
@@ -187,6 +188,7 @@ def main():
 
                                 if comp_data:
                                     compatibility_list.append(comp_data)
+                            data_dict['Compatibility']= compatibility_list
 
 
 
