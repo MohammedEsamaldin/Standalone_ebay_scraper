@@ -105,7 +105,7 @@ def main():
                     namespaces = {'ns0': 'urn:ebay:apis:eBLBaseComponents'}
                     response = requests.post(url, headers=headers, data=data, timeout=timeout_duration)
                     # Check the response status code
-                    # print(response.content)
+                    print(response.content)
                     if response.status_code == 200:
                         print('second request successded')
                         # print(response.content) 
@@ -177,17 +177,14 @@ def main():
                                             data_dict[category].append(element.text)
                                         else:
                                             data_dict[category] = element.text
-                                except AttributeError as e:
-                                    print(f'error is {e}')  # Ignore missing elements instead of throwing an error
+                                except AttributeError:
+                                    pass  # Ignore missing elements instead of throwing an error
                            
                             ########## Compatibility Table ###########
-                                
                             
-                            print('test3')
                             try:
-                                print(doc)
+        
                                 # Navigate to the Compatibility elements
-                                print('Searching for Compatibility!!')
                                 item_compatibility_list = doc['ns0:GetSingleItemResponse']['ns0:Item']['ns0:ItemCompatibilityList']
                                 compatibilities = item_compatibility_list.get('ns0:Compatibility', [])
 
@@ -212,7 +209,6 @@ def main():
 
                                     if comp_data:
                                         compatibility_list.append(comp_data)
-                                        print(f'found compatibility \n {compatibility_list}')
                                 data_dict['Compatibility']= compatibility_list
                             except AttributeError as e:
                                     print(f"Error accessing text attribute: {e}")
@@ -264,10 +260,7 @@ def main():
                                     # token = get_valid_application_token(app_id, client_secret)
                                     headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
                                     break
-                                    
-                            
-                            
-
+                    
                     else:
                         global app_id
                         # Authentication error, token might have expired
