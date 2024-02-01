@@ -1,8 +1,11 @@
 import keys2
 import user_counter
 from datetime import datetime
+import os
 
-filename = '/home/qparts/ebay_scraper/user_counter.json'  # JSON file to store counters
+filename = os.path.join(os.path.dirname(__file__), 'user_counter.json')
+
+# filename = '/home/qparts/ebay_scraper/user_counter.json'  # JSON file to store counters
 #
 def user_credentials_selector(user=1):
     max_count = 5000

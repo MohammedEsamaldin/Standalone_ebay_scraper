@@ -60,13 +60,14 @@ def main():
         start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
     except:
         print('It is a new scarping cycle for today')
-        excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
-        print(f'Last scraped file is \t : {excel_file_path}')
+#        excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
+ #       print(f'Last scraped file is \t : {excel_file_path}')
         n_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
         new_file = pd.DataFrame(columns = ['Part Number'])
         new_file.to_excel(n_path)
-        last_scraped_file = pd.read_excel(excel_file_path)
-        last_processed_value = last_scraped_file['Part Number'].iloc[-1]
+   #     last_scraped_file = pd.read_excel(excel_file_path)
+        last_processed_value = "EOTZ 1S177 BA"
+        #last_scraped_file['Part Number'].iloc[-1]
         start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
     
 
@@ -105,7 +106,7 @@ def main():
                     namespaces = {'ns0': 'urn:ebay:apis:eBLBaseComponents'}
                     response = requests.post(url, headers=headers, data=data, timeout=timeout_duration)
                     # Check the response status code
-                    print(response.content)
+                  #  print(response.content)
                     if response.status_code == 200:
                         print('second request successded')
                         # print(response.content) 
