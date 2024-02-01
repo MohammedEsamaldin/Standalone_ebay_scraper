@@ -1,16 +1,34 @@
-import requests
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
-import requests
 
-# List of proxies to test
-proxies =  ["http://145.253.188.132:80","http://202.62.10.210:8080"]
-# Test each proxy
-for proxy in proxies:
+def send_email_notification():
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+    smtp_username = "mohammedesam.mem@gmail.com"  # Add you Email here
+    smtp_password = "upfi plbj ldyq khjb" # Add generated pass code here 
+    sender_email = "mohammedesam.mem@gmail.com"  # Add you Email here
+    receiver_email = "mohammedesam.mem@gmail.com"  # Add you Email here
+
+    msg = MIMEMultipart()
+    msg["From"] = sender_email
+    msg["To"] = receiver_email
+    msg["Subject"] = "Pipeline failure !!"
+
+    body = """Dear Mohammed,\nThe pipeline scraper has been stop due some errors, one is that the user reached the limit of 5000/day.\nPlease login to the account of AWS and chaneged the user!! \nBest regards,\nNotification center."""
+    msg.attach(MIMEText(body, "plain"))
+
     try:
-        response = requests.get("http://httpbin.org/ip", proxies={"http": proxy, "https": proxy}, timeout=10)
-        if response.status_code == 200:
-            print(f"Proxy {proxy} is working. IP: {response.json()['origin']}")
-        else:
-            print(f"Proxy {proxy} failed with status code {response.status_code}.")
-    except requests.exceptions.RequestException as e:
-        print(f"Proxy {proxy} failed with error: {e}")
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        text = msg.as_string()
+        server.sendmail(sender_email, receiver_email, text)
+        server.quit()
+        print("Email notification sent successfully.")
+    except Exception as e:
+        print(f"Failed to send email notification: {e}")
+
+
+send_email_notification()
