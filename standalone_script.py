@@ -280,8 +280,7 @@ def main():
 
     # print(start_index)
     for _, row in part_numbers.iloc[start_index:].iterrows():
-        proxy = next(proxy_pool)
-                
+        
         client_id, client_secret,c_user, current_count= user_credentials_selector()
         if c_user is None:
             break

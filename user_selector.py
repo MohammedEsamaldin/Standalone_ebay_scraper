@@ -2,6 +2,7 @@ import keys2
 import user_counter
 from datetime import datetime
 import os
+from email_notifier import send_email_notification
 
 filename = os.path.join(os.path.dirname(__file__), 'user_counter.json')
 
@@ -30,6 +31,7 @@ def user_credentials_selector(user=1):
 
     # If all users have exceeded the limit
     print("All users have exceeded the limit for today.")
+    send_email_notification()
     return None, None, None, None
 
 # Example usage
