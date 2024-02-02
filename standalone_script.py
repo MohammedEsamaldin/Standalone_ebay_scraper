@@ -108,7 +108,7 @@ def main():
                   #  print(response.content)
                     if response.status_code == 200:
                         print('second request successded')
-                        print(response.content) 
+                        # print(response.content) 
                     
                         root = ET.fromstring(response.content)
                         # XML data
