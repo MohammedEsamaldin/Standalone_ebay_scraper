@@ -123,7 +123,7 @@ def main():
                             'OE/OEM Part Number','Interchange Part Number',
                             'Manufacturer Part Number', 'Model', 'Other Part Number','Replaces Part Number',
                             'Part Brand','Brand','FOR','Fit',
-                            'Placement on Vehicle', 'Type', 'Year'
+                            'Placement on Vehicle', 'Type', 'Year', "ItemCompatibilityCount"
                             ]
                         # Parse the XML data
                         root = ET.fromstring(xml_data)
