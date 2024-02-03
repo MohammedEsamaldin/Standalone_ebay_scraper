@@ -1,0 +1,217 @@
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py:228: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  scraped_data = pd.concat([scraped_data,dr],ignore_index= True)
+Email notification sent successfully.
+Token expired. Fetching a new one.
+function started
+Last scraped file is 	 : /home/ubuntu/pyhon-app/Standalone_ebay_scraper/output/chunk_3_03-02-2024.xlsx
+Token is valid.
+loop started at  F5AZ 12A697 A
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 13A018 A
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 13A565 A
+first request success
+Token is valid.
+loop started at  F5AZ 13A805 AA
+first request success
+Token is valid.
+loop started at  F5AZ 9N005 B
+first request success
+second request successded
+data saved
+Token is valid.
+loop started at  F5AZ 12A581 A
+first request success
+Token is valid.
+loop started at  F5AZ 13A756 A
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 13A805 AB
+first request success
+Token is valid.
+loop started at  F5AZ 13A805 AC
+first request success
+Token is valid.
+loop started at  F5AZ 13A805 BA
+first request success
+Token is valid.
+loop started at  F5AZ 13A805 BB
+first request success
+Token is valid.
+loop started at  F5AZ 13A805 BC
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 13K359 A
+first request success
+second request successded
+data saved
+Token is valid.
+loop started at  F5AZ 14A099 AA
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 14A227 A
+first request success
+Token is valid.
+loop started at  F5AZ 14A313 A
+first request success
+Token is valid.
+loop started at  F5AZ 14A501 B
+first request success
+second request successded
+data saved
+Token is valid.
+loop started at  F5AZ 14A664 A
+first request success
+Token is valid.
+loop started at  F5AZ 14A699 B
+first request success
+Token is valid.
+loop started at  F5AZ 14A699 D
+first request success
+Token is valid.
+loop started at  F5AZ 14A701 A
+first request success
+Token is valid.
+loop started at  F5AZ 14A701 B
+first request success
+Token is valid.
+loop started at  F5AZ 14A706 BC
+first request success
+Token is valid.
+loop started at  F5AZ 14B004 A
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 14B691 A
+first request success
+Token is valid.
+loop started at  F5AZ 14C715 A
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 14C724 A
+first request success
+second request successded
+data saved
+Token is valid.
+loop started at  F5AZ 16A023 A
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 16B168 A
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 14A701 C
+first request success
+Token is valid.
+loop started at  F5AZ 14A706 BB
+first request success
+Token is valid.
+loop started at  F5AZ 16A024 A
+first request success
+Token is valid.
+loop started at  F5AZ 16B999 AA
+first request success
+Token is valid.
+loop started at  F5AZ 17A385 A
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 17B676 A
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 17B676 B
+first request success
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+secod retry with new token
+second request successded
+Key error: 'ns0:ItemCompatibilityList'
+data saved
+Token is valid.
+loop started at  F5AZ 17B676 D
+Traceback (most recent call last):
+  File "/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py", line 356, in <module>
+    main()
+  File "/home/ubuntu/pyhon-app/Standalone_ebay_scraper/standalone_script.py", line 299, in main
+    search_response = requests.get(url,timeout=timeout_duration)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/requests/adapters.py", line 486, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 700, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 383, in _make_request
+    self._validate_conn(conn)
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 1017, in _validate_conn
+    conn.connect()
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 353, in connect
+    conn = self._new_conn()
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 169, in _new_conn
+    conn = connection.create_connection(
+  File "/usr/lib/python3/dist-packages/urllib3/util/connection.py", line 73, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "/usr/lib/python3.10/socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+KeyboardInterrupt
