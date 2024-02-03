@@ -19,7 +19,7 @@ def fetch_and_store_application_token(client_id, client_secret, user, filename='
     response.raise_for_status()
     data = response.json()
     access_token = data['access_token']
-    expires_in = data['expires_in']  # Time in seconds
+    expires_in = data['expires_in'] - 3600 # Time in seconds
     expiry_time = datetime.now() + timedelta(seconds=expires_in)
     
     # Load existing tokens

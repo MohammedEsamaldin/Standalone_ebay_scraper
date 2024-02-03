@@ -289,7 +289,7 @@ def main():
             current_count = update_counter(user = c_user)
             part_number = row['Part Number'] 
             product_name  = part_number
-            print('loop started at ',part_number)
+            print('loop is at ',part_number)
 
             # Step 1: Search for the item using keywords
             url = f"https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME={app_id}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords={product_name}"
