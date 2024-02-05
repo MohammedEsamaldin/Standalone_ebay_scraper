@@ -1,0 +1,5 @@
+"""ion>RequestError</ErrorClassification>\n   </Errors>\n   <Build>1299_CORE_APILW_19146596_R1</Build>\n   <Version>1299</Version>\n  </GetSingleItemResponse>\n '
+secod retry with new token
+second request successded
+b'<?xml version="1.0" encoding="UTF-8"?>\n\n  <GetSingleItemResponse xmlns="urn:ebay:apis:eBLBaseComponents">\n   <Timestamp>2024-02-05T12:08:26.518Z</Timestamp>\n   <Ack>Failure</Ack>\n   <Errors>\n    <ShortMessage>Invalid token.</ShortMessage>\n    <LongMessage>Invalid token. Please specify a valid token as HTTP header.</LongMessage>\n    <ErrorCode>1.32</ErrorCode>\n    <SeverityCode>Error</SeverityCode>\n    <ErrorClassification>RequestError</ErrorClassification>\n   </Errors>\n   <Build>1299_CORE_APILW_19146596_R1</Build>\n   <Version>1299</Version>\n  </GetSingleItemResponse>\n '
+secod retry with new token"""
