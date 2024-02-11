@@ -25,7 +25,8 @@ def user_credentials_selector(user=1):
         if current_count < max_count:
             app_id = getattr(keys2, f'app_id_{i}', None)
             client_secre = getattr(keys2, f'client_secre_{i}', None)
-            return app_id, client_secre, i, current_count
+            refresher_token = getattr(keys2,f'refresher_token_{i}',None)
+            return app_id, client_secre, i, refresher_token,current_count
         # elif current_count == max_count:
 
 

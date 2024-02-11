@@ -14,14 +14,12 @@ from itertools import cycle
 
 
 def main():
-    proxies = ["http://202.62.10.210:8080"]
-            #    , "http://54.36.122.54:8000", "http://135.148.90.31:8000"]
-    proxy_pool = cycle(proxies)
+    
     global token
-    client_id, client_secret,c_user, current_count= user_credentials_selector()
+    client_id, client_secret,c_user, ref_token,current_count= user_credentials_selector()
     if c_user is None:
         return
-    token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
+    token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user,refresh_token= ref_token)
     script_path  = Path(__file__).parent
     timeout_duration = 10
     max_retries = 3
@@ -280,10 +278,10 @@ def main():
     # print(start_index)
     for _, row in part_numbers.iloc[start_index:].iterrows():
         
-        client_id, client_secret,c_user, current_count= user_credentials_selector()
+        client_id, client_secret,c_user, ref_token, current_count= user_credentials_selector()
         if c_user is None:
             break
-        token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
+        token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user, refresh_token= ref_token)
         
         if current_count < max_request:
             current_count = update_counter(user = c_user)

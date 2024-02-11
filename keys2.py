@@ -7,12 +7,12 @@ client_secre_1 = 'PRD-f4ae1e04486a-3a14-4949-afae-5878'
 # Q Parts user (dataprojectsqvm@gmail.com)
 app_id_2 = 'Qvmparts-Productc-PRD-1e584dc36-9bda5d05'
 client_secre_2 = 'PRD-e584dc360355-715d-45b6-aad1-25ea'
-refresher_token =  "v^1.1#i^1#f^0#I^3#r^1#p^3#t^Ul4xMF8xMTo2N0MyNkRGRUU1QkQyQURDNDgxNDJBQTNGNTk2MUE1Rl8wXzEjRV4yNjA="
+refresher_token_2 =  "v^1.1#i^1#f^0#I^3#r^1#p^3#t^Ul4xMF8xMTo2N0MyNkRGRUU1QkQyQURDNDgxNDJBQTNGNTk2MUE1Rl8wXzEjRV4yNjA="
 
 # Duaa user
 app_id_3 = 'marocoma-Duaadeal-PRD-ae5603d2f-872cef27'
 client_secre_3 = 'PRD-e5603d2f1627-ecd9-4172-bd12-339b'
-refresher_token_3 = 'v^1.1#i^1#r^1#f^0#I^3#p^3#t^Ul4xMF8wOjM4QkMwQTZFNDc0MkJBMUE0MTA1RTQ4OUM1ODgzNkQxXzBfMSNFXjI2MA=='
+refresher_token_3 = 'v^1.1#i^1#r^1#f^0#p^3#I^3#t^Ul4xMF8yOjhCOTc0MkE4MDlFNTVEQzM0MEJDNkU0MkM4Mjk0REQ3XzBfMSNFXjI2MA=='
 
 # Sara user
 app_id_4 = 'JerryJoy-saradeal-PRD-ce5603d2f-eb9b4f3a'
