@@ -91,7 +91,7 @@ def main():
     
 
     def make_api_request(url, headers, data, part_number,first_item_id,timeout_duration, retry_delay, max_retries=3):
-            global client_id, client_secret,c_user, current_count, token
+            global client_id, client_secret,c_user, current_count, token ,ref_token
             excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
             scraped_data = pd.read_excel(excel_file_path)
 
@@ -242,8 +242,8 @@ def main():
                                 if short_message == "IP limit exceeded.":
                                     print(f'limit is exceeded for the current user' )
                                     
-                                    
-                                    
+                                    send_email_notification()
+                                    return 22
                                     # Making the current user count = 5000 to move to next item
                                     
                                     client_id, client_secret,c_user, current_count= user_credentials_selector()
@@ -257,14 +257,24 @@ def main():
                                
                                     # token = get_valid_application_token(app_id, client_secret)
                                     headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
+                                    
+                                elif short_message == "Invalid token.":
+                                    print("Token has expierd,getting new Token")
+                                    last_token = token
+                                    token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user,refresh_token= ref_token)
+                                    headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
+                                    send_email_notification(body = f"Token have been expiered!!\nlast token was  = {last_token}\n and new token is {token}")
                                     break
-                    
+
+
                     else:
                         global app_id
                         # Authentication error, token might have expired
                         print("Authentication failed, fetching a new token...")
                           # Ensure we are updating the global token variable
-                        token = get_valid_application_token(app_id, client_secret)
+                        # token = get_valid_application_token(app_id, client_secret)
+                        token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user,refresh_token= ref_token)
+
                         headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"  # Update the header with the new token
                         continue  # Retry with the new token
                 except requests.exceptions.Timeout:
@@ -332,7 +342,8 @@ def main():
                 if response is None:
                     continue
                       # Skip to the next part number if the request failed
-
+                elif response == 22:
+                    break
 
                 else:
                     print("Maximum retries reached for this part number, moving to next.")
