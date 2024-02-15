@@ -130,6 +130,20 @@ def main():
                         data_dict = {
                             category: [] if category in ['PictureURL', 'Placement on Vehicle'] else None for category in categories
                         }
+                        should_continue = False 
+                        for error in root.findall(".//ns0:Errors", namespaces):
+                            short_message = error.find("ns0:ShortMessage", namespaces).text
+                            if short_message=="Invalid token.":
+                                        print("Token has expierd,getting new Token")
+                                        last_token = token
+                                        token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
+                                        # token = get_valid_application_token(app_id, client_secret)
+                                        headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
+                                        send_email_notification(body = f"Token have been expiered!!\nlast token was  = {last_token}\n and new token is {token}")
+                                        should_continue = True
+                                        break
+                        if should_continue:
+                            continue
                         
                         
                         try:
