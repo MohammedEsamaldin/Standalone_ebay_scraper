@@ -35,7 +35,7 @@ def main():
     # Your eBay app ID
     # /home/qparts/ebay_scraper/input_data
     # /home/qparts/ebay_scraper/input_data/chunk_1.xlsx
-    app_id = keys.app_id
+    # app_id = keys.app_id
     client_secret = keys.client_secret
     partnumber_file_path = f"{script_path}/input_data/chunk_3.xlsx"
     part_numbers  = pd.read_excel(partnumber_file_path)
@@ -58,12 +58,21 @@ def main():
         start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
     except:
         print('It is a new scarping cycle for today')
-        excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
+        try:
+            excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
+            last_scraped_file = pd.read_excel(excel_file_path)
+        except:
+            yesterday_date = current_date - timedelta(days=2)
+            data_of_yesterday_scraped_file = yesterday_date.strftime("%d-%m-%Y")
+            yesterday_scraped_file = file_name+'_'+data_of_yesterday_scraped_file
+            excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
+            last_scraped_file = pd.read_excel(excel_file_path)
+
         print(f'Last scraped file is \t : {excel_file_path}')
         n_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
         new_file = pd.DataFrame(columns = ['Part Number'])
         new_file.to_excel(n_path)
-        last_scraped_file = pd.read_excel(excel_file_path)
+        
         last_processed_value = last_scraped_file['Part Number'].iloc[-1]
         start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
     
@@ -314,7 +323,7 @@ def main():
             print('loop is at ',part_number)
 
             # Step 1: Search for the item using keywords
-            url = f"https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME={app_id}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords={product_name}"
+            url = f"https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME={client_id}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords={product_name}"
             for attempt in range(max_retries):
                 try:
                     
