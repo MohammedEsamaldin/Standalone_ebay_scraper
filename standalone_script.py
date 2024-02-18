@@ -36,8 +36,11 @@ def main():
     # /home/qparts/ebay_scraper/input_data
     # /home/qparts/ebay_scraper/input_data/chunk_1.xlsx
     # app_id = keys.app_id
+
+    # 1033144
+
     client_secret = keys.client_secret
-    partnumber_file_path = f"{script_path}/input_data/chunk_3.xlsx"
+    partnumber_file_path = f"{script_path}/input_data/chunk_15.xlsx"
     part_numbers  = pd.read_excel(partnumber_file_path)
     file_name  = Path(partnumber_file_path).stem
     # Dates
@@ -54,7 +57,8 @@ def main():
         excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
         last_scraped_file = pd.read_excel(excel_file_path)
         print(f'Last scraped file is \t : {excel_file_path}')
-        last_processed_value = last_scraped_file['Part Number'].iloc[-1]
+        last_processed_value = "1033144"
+        # last_scraped_file['Part Number'].iloc[-1]
         start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
     except:
         print('It is a new scarping cycle for today')
