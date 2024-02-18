@@ -57,8 +57,7 @@ def main():
         excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
         last_scraped_file = pd.read_excel(excel_file_path)
         print(f'Last scraped file is \t : {excel_file_path}')
-        last_processed_value = "1033144"
-        # last_scraped_file['Part Number'].iloc[-1]
+        last_processed_value = last_scraped_file['Part Number'].iloc[-1]
         start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
     except:
         print('It is a new scarping cycle for today')
@@ -66,7 +65,7 @@ def main():
             excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
             last_scraped_file = pd.read_excel(excel_file_path)
         except:
-            yesterday_date = current_date - timedelta(days=2)
+            yesterday_date = current_date - timedelta(days=3)
             data_of_yesterday_scraped_file = yesterday_date.strftime("%d-%m-%Y")
             yesterday_scraped_file = file_name+'_'+data_of_yesterday_scraped_file
             excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
