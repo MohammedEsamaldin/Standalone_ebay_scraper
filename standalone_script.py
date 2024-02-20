@@ -106,7 +106,7 @@ def main():
             global client_id, client_secret,c_user, current_count, token ,ref_token
             excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
             scraped_data = pd.read_excel(excel_file_path)
-
+            print(headers)
             for attempt in range(max_retries):
                 
                 if attempt >= 1:
@@ -118,7 +118,7 @@ def main():
                   #  print(response.content)
                     if response.status_code == 200:
                         print('second request successded')
-                        print(response.content) 
+                        # print(response.content) 
                     
                         root = ET.fromstring(response.content)
                         # XML data
@@ -149,8 +149,8 @@ def main():
                                         print("Token has expierd,getting new Token")
                                         last_token = token
                                         token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
-                                        # token = get_valid_application_token(app_id, client_secret)
                                         headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
+                                        # shoppin_headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
                                         send_email_notification(body = f"Token have been expiered!!\nlast token was  = {last_token}\n and new token is {token}")
                                         should_continue = True
                                         break
@@ -268,7 +268,7 @@ def main():
                                 if short_message == "IP limit exceeded.":
                                     print(f'limit is exceeded for the current user' )
                                     
-                                    send_email_notification()
+                                    send_email_notification(body = f'Limit Exceeded for user {c_user}\nThe count was = {current_count}')
                                     return 22
                                     # Making the current user count = 5000 to move to next item
                                     
@@ -282,13 +282,15 @@ def main():
                                     token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
                                
                                     # token = get_valid_application_token(app_id, client_secret)
-                                    headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
+                                    # headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
+                                    shoppin_headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
                                     
                                 elif short_message == "Invalid token.":
                                     print("Token has expierd,getting new Token")
                                     last_token = token
                                     token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user,refresh_token= ref_token)
                                     headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
+                                    # shoppin_headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
                                     send_email_notification(body = f"Token have been expiered!!\nlast token was  = {last_token}\n and new token is {token}")
                                     break
 
