@@ -11,11 +11,11 @@ from user_selector import *
 from datetime import datetime,timedelta
 import xmltodict
 from itertools import cycle
-from email_notifier import send_email_notification
+from email_notifier import *
 
 def main():
     
-    global token,shoppin_headers
+    global token,shoppin_headers, client_id, client_secret,c_user, ref_token,current_count
     client_id, client_secret,c_user, ref_token,current_count= user_credentials_selector()
     if c_user is None:
         return
@@ -109,7 +109,7 @@ def main():
                   #  print(response.content)
                     if response.status_code == 200:
                         print('second request successded')
-                        # print(response.content) 
+                        print(response.content) 
                     
                         root = ET.fromstring(response.content)
                         # XML data
@@ -239,26 +239,25 @@ def main():
                                 short_message = error.find('ns0:ShortMessage', namespaces).text
                                 if short_message == "IP limit exceeded.":
                                     print(f'limit is exceeded for the current user' )
-                                    
-                                    send_email_notification(body = f'Limit Exceeded for user {c_user}\nThe count was = {current_count}')
-                                    
+                                    send_email_notification(body = f'Limit Exceeded for user {c_user}\nThe count was = {current_count}')                                   
                                     # Making the current user count = 5000 to move to next item
                                     old_user = c_user
-                                    client_id, client_secret,c_user, current_count= user_credentials_selector()
+                                    client_id, client_secret,c_user, ref_token,current_count= user_credentials_selector()
+                                    
                                     if c_user == old_user:
                                         print(f'user number {c_user}')
                                         change_user_count(c_user)
-                                        client_id, client_secret,c_user, current_count= user_credentials_selector()
+                                        client_id, client_secret,c_user, ref_token,current_count= user_credentials_selector()
                                         print(f'user number {c_user}')
                                     #  # Ensure we are updating the global token variable
-                                    re_token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
+                                    re_token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user,refresh_token= ref_token)
                                     return 22, re_token
     
                                     
                                 elif short_message == "Invalid token.":
                                     print("Token has expierd,getting new Token")
                                     last_token = token
-                                    new_token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
+                                    new_token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user,refresh_token= ref_token)
                                     send_email_notification(body = f"Token have been expiered!!\nlast token was  = {last_token}\n and new token is {new_token}")
                                     return False, new_token
 

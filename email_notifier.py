@@ -31,3 +31,4 @@ def send_email_notification(body = tempalte_body):
         print("Email notification sent successfully.")
     except Exception as e:
         print(f"Failed to send email notification: {e}")
+# send_email_notification()
