@@ -57,7 +57,7 @@ def get_valid_application_token(client_id, client_secret, user, refresh_token,fi
         token_data = tokens[user_str]
         access_token = token_data['access_token']
         expiry_time = datetime.fromisoformat(token_data['expiry_time'])
-        print(f'expier at :{expiry_time}\ncurrent time is :{datetime.now()}')
+        # print(f'expier at :{expiry_time}\ncurrent time is :{datetime.now()}')
         if datetime.now() < expiry_time:
             print("Token is valid.")
             return access_token

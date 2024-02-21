@@ -97,7 +97,7 @@ def main():
             global client_id, client_secret,c_user, current_count, token ,ref_token
             excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
             scraped_data = pd.read_excel(excel_file_path)
-            print(headers)
+            
             for attempt in range(max_retries):
                 
                 if attempt >= 1:
