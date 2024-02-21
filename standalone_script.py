@@ -11,11 +11,11 @@ from user_selector import *
 from datetime import datetime,timedelta
 import xmltodict
 from itertools import cycle
-
+from email_notifier import send_email_notification
 
 def main():
     
-    global token
+    global token,shoppin_headers
     client_id, client_secret,c_user, ref_token,current_count= user_credentials_selector()
     if c_user is None:
         return
@@ -25,19 +25,10 @@ def main():
     max_retries = 3
     retry_delay = 5 
     max_request = 5000
-    # print(f'current count for user {current_count}')
-    # countig_range = max_request - current_count
-    # print('counting range is ',countig_range)
-    # Example timeout duration in seconds
     timeout_duration = 60
 
     print('function started')
-    # Your eBay app ID
-    # /home/qparts/ebay_scraper/input_data
-    # /home/qparts/ebay_scraper/input_data/chunk_1.xlsx
-    # app_id = keys.app_id
-
-    # 1033144
+    
 
     client_secret = keys.client_secret
     partnumber_file_path = f"{script_path}/input_data/chunk_15.xlsx"
@@ -142,22 +133,7 @@ def main():
                         data_dict = {
                             category: [] if category in ['PictureURL', 'Placement on Vehicle'] else None for category in categories
                         }
-                        should_continue = False 
-                        for error in root.findall(".//ns0:Errors", namespaces):
-                            short_message = error.find("ns0:ShortMessage", namespaces).text
-                            if short_message=="Invalid token.":
-                                        print("Token has expierd,getting new Token")
-                                        last_token = token
-                                        token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
-                                        headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
-                                        # shoppin_headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
-                                        send_email_notification(body = f"Token have been expiered!!\nlast token was  = {last_token}\n and new token is {token}")
-                                        should_continue = True
-                                        break
-                        if should_continue:
-                            continue
-                        
-                        
+                   
                         try:
                             # Extract basic information
                             title = root.find('.//ns0:Title', namespaces).text
@@ -240,12 +216,8 @@ def main():
                                 print(f"Key error: {e}")
                             except Exception as e:
                                 print(f"An unexpected error occurred: {e}")
-                            #     
                             
-
-
-
-
+                            # Saving data into dataframes
                             df = pd.DataFrame([data_dict])
                             dn = pd.DataFrame([{'Part Number':part_number, 'Item ID':first_item_id}])
                             dr = pd.concat([dn, df],axis=1, join='outer', ignore_index=False)
@@ -269,30 +241,26 @@ def main():
                                     print(f'limit is exceeded for the current user' )
                                     
                                     send_email_notification(body = f'Limit Exceeded for user {c_user}\nThe count was = {current_count}')
-                                    return 22
+                                    
                                     # Making the current user count = 5000 to move to next item
-                                    
+                                    old_user = c_user
                                     client_id, client_secret,c_user, current_count= user_credentials_selector()
-                                    print(f'user number {c_user}')
-                                    change_user_count(c_user)
-                                    
-                                    client_id, client_secret,c_user, current_count= user_credentials_selector()
-                                    print(f'user number {c_user}')
+                                    if c_user == old_user:
+                                        print(f'user number {c_user}')
+                                        change_user_count(c_user)
+                                        client_id, client_secret,c_user, current_count= user_credentials_selector()
+                                        print(f'user number {c_user}')
                                     #  # Ensure we are updating the global token variable
-                                    token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
-                               
-                                    # token = get_valid_application_token(app_id, client_secret)
-                                    # headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
-                                    shoppin_headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
+                                    re_token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
+                                    return 22, re_token
+    
                                     
                                 elif short_message == "Invalid token.":
                                     print("Token has expierd,getting new Token")
                                     last_token = token
-                                    token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user,refresh_token= ref_token)
-                                    headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
-                                    # shoppin_headers["X-EBAY-API-IAF-TOKEN"] = f"Bearer {token}"
-                                    send_email_notification(body = f"Token have been expiered!!\nlast token was  = {last_token}\n and new token is {token}")
-                                    break
+                                    new_token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user)
+                                    send_email_notification(body = f"Token have been expiered!!\nlast token was  = {last_token}\n and new token is {new_token}")
+                                    return False, new_token
 
 
                     else:
@@ -320,7 +288,7 @@ def main():
         if c_user is None:
             break
         token = get_valid_application_token(client_id = client_id, client_secret= client_secret, user=c_user, refresh_token= ref_token)
-        
+        shoppin_headers['X-EBAY-API-IAF-TOKEN'] = f"Bearer {token}"
         if current_count < max_request:
             current_count = update_counter(user = c_user)
             part_number = row['Part Number'] 
@@ -365,13 +333,22 @@ def main():
                 '''
 
                 # ,Compatibility
-                response = make_api_request(url_shopping, headers=shoppin_headers, data=body, part_number= part_number,first_item_id=first_item_id,timeout_duration = timeout_duration, retry_delay= retry_delay)
-                # print(response.content)
-                if response is None:
-                    continue
-                      # Skip to the next part number if the request failed
-                elif response == 22:
-                    break
+                for attempt in range(max_retries):
+                    response,re_token = make_api_request(url_shopping, headers=shoppin_headers, data=body, part_number= part_number,first_item_id=first_item_id,timeout_duration = timeout_duration, retry_delay= retry_delay)
+                    # print(response.content)
+                    if response is None:
+                        print('next item !!')
+                        break
+                        # Skip to the next part number if the request failed
+                    elif response == 22:
+                        print('new user loop !!!!')
+                        shoppin_headers['X-EBAY-API-IAF-TOKEN'] = f"Bearer {re_token}"
+                        continue
+                    elif response== False:
+                        print('new token !!!')
+                        shoppin_headers['X-EBAY-API-IAF-TOKEN'] = f"Bearer {re_token}"
+                        continue
+                    
 
                 else:
                     print("Maximum retries reached for this part number, moving to next.")
