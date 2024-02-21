@@ -109,7 +109,7 @@ def main():
                   #  print(response.content)
                     if response.status_code == 200:
                         print('second request successded')
-                        # print(response.content) 
+                        print(response.content) 
                     
                         root = ET.fromstring(response.content)
                         # XML data
@@ -230,7 +230,7 @@ def main():
                             scraped_data.to_excel(f"./output/{full_scraped_data_filename}.xlsx",index= False)
                             scraped_data.to_csv(f"./output/{full_scraped_data_filename}.csv",index= False)
                             print('data saved')
-                            break  # If successful, break out of the retry loop
+                            return None  # If successful, break out of the retry loop
 
 
 
@@ -335,7 +335,7 @@ def main():
                 # ,Compatibility
                 for attempt in range(max_retries):
                     response,re_token = make_api_request(url_shopping, headers=shoppin_headers, data=body, part_number= part_number,first_item_id=first_item_id,timeout_duration = timeout_duration, retry_delay= retry_delay)
-                    # print(response.content)
+                    print(response)
                     if response is None:
                         print('next item !!')
                         break
