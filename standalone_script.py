@@ -339,6 +339,7 @@ def main():
                         break
                         # Skip to the next part number if the request failed
                     elif response == 22:
+                        return
                         print('new user loop !!!!')
                         shoppin_headers['X-EBAY-API-IAF-TOKEN'] = f"Bearer {re_token}"
                         continue
