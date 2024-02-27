@@ -31,7 +31,7 @@ def main():
     
 
     client_secret = keys.client_secret
-    partnumber_file_path = f"{script_path}/input_data/chunk_15.xlsx"
+    partnumber_file_path = f"{script_path}/input_data/HONDA.xlsx"
     part_numbers  = pd.read_excel(partnumber_file_path)
     file_name  = Path(partnumber_file_path).stem
     # Dates
