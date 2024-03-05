@@ -46,11 +46,20 @@ def main():
     try:
         # /home/qparts/ebay_scraper/output
         excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
-        # last_scraped_file = pd.read_excel(excel_file_path)
-        # print(f'Last scraped file is \t : {excel_file_path}')
-        # last_processed_value = last_scraped_file['Part Number'].iloc[-1]
-        start_index = 1
-        # part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
+        last_scraped_file = pd.read_excel(excel_file_path)
+        print(f'Last scraped file is \t : {excel_file_path}')
+        last_processed_value = last_scraped_file['Part Number'].iloc[-1]
+        start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
+
+        # /////////////////////////////////////////////////////
+
+        # if you started a new file that was not scraped before, you have to make a new empty file so that the scraping data colud be filled in 
+        # new_file = pd.DataFrame(columns = ['Part Number'])    
+        # new_file.to_excel(excel_file_path) 
+        # start_index = 1                 
+
+        # ////////////////////////////////////////////////////
+        
     except:
         print('It is a new scarping cycle for today')
         try:
@@ -95,6 +104,7 @@ def main():
     
 
     def make_api_request(url, headers, data, part_number,first_item_id,timeout_duration, retry_delay, max_retries=3):
+            print(f'Second request function started !!!' )
             global client_id, client_secret,c_user, current_count, token ,ref_token
             excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
             scraped_data = pd.read_excel(excel_file_path)
@@ -107,7 +117,7 @@ def main():
                     namespaces = {'ns0': 'urn:ebay:apis:eBLBaseComponents'}
                     response = requests.post(url, headers=headers, data=data, timeout=timeout_duration)
                     # Check the response status code
-                  #  print(response.content)
+                    # print(response.content)
                     if response.status_code == 200:
                         print('second request successded')
                         # print(response.content) 
@@ -296,6 +306,7 @@ def main():
             print('loop is at ',part_number)
 
             # Step 1: Search for the item using keywords
+            
             url = f"https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME={client_id}&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords={product_name}"
             for attempt in range(max_retries):
                 try:
@@ -322,7 +333,7 @@ def main():
 
             try:
                 first_item_id = search_data['findItemsByKeywordsResponse'][0]['searchResult'][0]['item'][0]['itemId'][0]
-                
+                print(f'product Name  id:{first_item_id}')
                 # Construct the XML request body
                 body = f'''
                 <?xml version="1.0" encoding="utf-8"?>
@@ -334,6 +345,7 @@ def main():
 
                 # ,Compatibility
                 for attempt in range(max_retries):
+                    print('sending second request!!')
                     response,re_token = make_api_request(url_shopping, headers=shoppin_headers, data=body, part_number= part_number,first_item_id=first_item_id,timeout_duration = timeout_duration, retry_delay= retry_delay)
                     
                     if response is None:
