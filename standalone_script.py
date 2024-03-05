@@ -104,7 +104,7 @@ def main():
     
 
     def make_api_request(url, headers, data, part_number,first_item_id,timeout_duration, retry_delay, max_retries=3):
-            print(f'Second request function started !!!' )
+
             global client_id, client_secret,c_user, current_count, token ,ref_token
             excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
             scraped_data = pd.read_excel(excel_file_path)
@@ -333,7 +333,7 @@ def main():
 
             try:
                 first_item_id = search_data['findItemsByKeywordsResponse'][0]['searchResult'][0]['item'][0]['itemId'][0]
-                print(f'product Name  id:{first_item_id}')
+            
                 # Construct the XML request body
                 body = f'''
                 <?xml version="1.0" encoding="utf-8"?>
@@ -345,7 +345,7 @@ def main():
 
                 # ,Compatibility
                 for attempt in range(max_retries):
-                    print('sending second request!!')
+                    
                     response,re_token = make_api_request(url_shopping, headers=shoppin_headers, data=body, part_number= part_number,first_item_id=first_item_id,timeout_duration = timeout_duration, retry_delay= retry_delay)
                     
                     if response is None:
