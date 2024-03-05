@@ -19,7 +19,12 @@ refresher_token_3 = 'v^1.1#i^1#r^1#p^3#f^0#I^3#t^Ul4xMF84OkE4MUQ0NzQ4MEYyOUQ5NkM
 # client_secre_3 = 'PRD-e5603d2f1627-ecd9-4172-bd12-339b'
 # refresher_token_3 = 'v^1.1#i^1#r^1#f^0#I^3#p^3#t^Ul4xMF8wOjM4QkMwQTZFNDc0MkJBMUE0MTA1RTQ4OUM1ODgzNkQxXzBfMSNFXjI2MA=='
 
-# Sara user
-app_id_4 = 'JerryJoy-saradeal-PRD-ce5603d2f-eb9b4f3a'
-client_secre_4 = 'PRD-e5603d2fc9dd-ef7c-4e07-8ee0-d3e4'
-refresher_token_4 = 'v^1.1#i^1#p^3#f^0#r^1#I^3#t^Ul4xMF8xMTo1NkNBQ0U2NzQyMzdENkVFRjlCRTQ0NTVEREVGRTlFNF8wXzEjRV4yNjA='
+# # Sara user
+# app_id_4 = 'JerryJoy-saradeal-PRD-ce5603d2f-eb9b4f3a'
+# client_secre_4 = 'PRD-e5603d2fc9dd-ef7c-4e07-8ee0-d3e4'
+# refresher_token_4 = 'v^1.1#i^1#p^3#f^0#r^1#I^3#t^Ul4xMF8xMTo1NkNBQ0U2NzQyMzdENkVFRjlCRTQ0NTVEREVGRTlFNF8wXzEjRV4yNjA='
+
+# Yassir
+app_id_4 = "Yasirsin-Asomasin-PRD-0e9f9e983-4108eb29"
+client_secre_4 = "PRD-e9f9e9832425-2cca-4470-97b4-bd3a"
+refresher_token_4 = "v^1.1#i^1#r^1#f^0#I^3#p^3#t^Ul4xMF82OkU1NEM2MzY1NTBFM0RBRjc0MEY2MzU0MDNCMzdCRkI2XzBfMSNFXjI2MA=="
