@@ -46,17 +46,17 @@ def main():
     try:
         # /home/qparts/ebay_scraper/output
         excel_file_path = script_path / 'output' / f'{full_scraped_data_filename}.xlsx'
-        last_scraped_file = pd.read_excel(excel_file_path)
-        print(f'Last scraped file is \t : {excel_file_path}')
-        last_processed_value = last_scraped_file['Part Number'].iloc[-1]
-        start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
+        # last_scraped_file = pd.read_excel(excel_file_path)
+        # print(f'Last scraped file is \t : {excel_file_path}')
+        # last_processed_value = last_scraped_file['Part Number'].iloc[-1]
+        # start_index = part_numbers[part_numbers['Part Number'] == last_processed_value].index[0] + 1
 
         # /////////////////////////////////////////////////////
 
         # if you started a new file that was not scraped before, you have to make a new empty file so that the scraping data colud be filled in 
-        # new_file = pd.DataFrame(columns = ['Part Number'])    
-        # new_file.to_excel(excel_file_path) 
-        # start_index = 1                 
+        new_file = pd.DataFrame(columns = ['Part Number'])    
+        new_file.to_excel(excel_file_path) 
+        start_index = 1                 
 
         # ////////////////////////////////////////////////////
         
