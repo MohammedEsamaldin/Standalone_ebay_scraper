@@ -31,7 +31,7 @@ def main():
     
 
     client_secret = keys.client_secret
-    partnumber_file_path = f"{script_path}/input_data/Nissan.xlsx"
+    partnumber_file_path = f"{script_path}/input_data/a.xlsx"
     part_numbers  = pd.read_excel(partnumber_file_path)
     file_name  = Path(partnumber_file_path).stem
     # Dates
@@ -66,7 +66,7 @@ def main():
             excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
             last_scraped_file = pd.read_excel(excel_file_path)
         except:
-            yesterday_date = current_date - timedelta(days=3)
+            yesterday_date = current_date - timedelta(days=2)
             data_of_yesterday_scraped_file = yesterday_date.strftime("%d-%m-%Y")
             yesterday_scraped_file = file_name+'_'+data_of_yesterday_scraped_file
             excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
