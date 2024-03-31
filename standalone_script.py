@@ -37,7 +37,7 @@ def main():
     # Dates
     current_date = datetime.now()
     data_of_scraping = time.strftime("%d-%m-%Y")
-    yesterday_date = current_date - timedelta(days=2)
+    yesterday_date = current_date - timedelta(days=1)
     data_of_yesterday_scraped_file = yesterday_date.strftime("%d-%m-%Y")
 
     full_scraped_data_filename = file_name+'_'+data_of_scraping
