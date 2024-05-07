@@ -37,7 +37,7 @@ def main():
     # Dates
     current_date = datetime.now()
     data_of_scraping = time.strftime("%d-%m-%Y")
-    yesterday_date = current_date - timedelta(days=1)
+    yesterday_date = current_date - timedelta(days=5)
     data_of_yesterday_scraped_file = yesterday_date.strftime("%d-%m-%Y")
 
     full_scraped_data_filename = file_name+'_'+data_of_scraping
@@ -66,7 +66,7 @@ def main():
             excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
             last_scraped_file = pd.read_excel(excel_file_path)
         except:
-            yesterday_date = current_date - timedelta(days=3)
+            yesterday_date = current_date - timedelta(days=5)
             data_of_yesterday_scraped_file = yesterday_date.strftime("%d-%m-%Y")
             yesterday_scraped_file = file_name+'_'+data_of_yesterday_scraped_file
             excel_file_path = script_path / 'output' / f'{yesterday_scraped_file}.xlsx'
